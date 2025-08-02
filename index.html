@@ -3,82 +3,292 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Pendaftaran UT</title>
-<link rel="stylesheet" href="style.css">
+<title>Form Patroli Keamanan UT</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+    .form-header {
+        background: white;
+        text-align: center;
+        padding: 20px;
+        border-bottom: 2px solid #eee;
+    }
+    .form-header img {
+        width: 120px;
+        margin-bottom: 10px;
+    }
+    .form-header h1 {
+        margin: 5px 0;
+        font-size: 22px;
+        color: #222;
+    }
+    .form-header p {
+        margin: 0;
+        color: #555;
+    }
+    .form-container {
+        max-width: 700px;
+        background: white;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: 500;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        background: #ffc107;
+        color: #222;
+        font-size: 15px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #e0a800;
+    }
+    #status {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="form-header">
-  <img src="UT-logo.png" alt="United Tractors" class="logo">
-  <h1>Form Pendaftaran</h1>
-  <p>Silakan isi form di bawah ini untuk mendaftar.</p>
+    <img src="UT-logo.png" alt="United Tractors">
+    <h1>Form Patroli Keamanan</h1>
+    <p>Silakan isi laporan patroli sesuai wilayah</p>
 </div>
 
-<!-- Form -->
 <div class="form-container">
-  <form id="myForm">
+    <form id="patroliForm">
 
-    <!-- Nama -->
-    <label>Nama Lengkap</label>
-    <input type="text" name="nama" required>
+        <!-- Nama -->
+        <label>Nama</label>
+        <input type="text" name="nama" required>
 
-    <!-- Email -->
-    <label>Email</label>
-    <input type="email" name="email" required>
+        <!-- Cabang -->
+        <label>Cabang</label>
+        <input type="text" name="cabang" value="Head Office" readonly>
 
-    <!-- Nomor Telepon -->
-    <label>Nomor Telepon</label>
-    <input type="tel" name="telepon" required>
+        <!-- Wilayah -->
+        <label>Wilayah</label>
+        <select name="wilayah" id="wilayah" required>
+            <option value="">-- Pilih Wilayah --</option>
+            <option value="Wilayah 1B">Wilayah 1B</option>
+            <option value="Wilayah 1">Wilayah 1</option>
+            <option value="Wing">Wing</option>
+            <option value="UTHO Tower">UTHO Tower</option>
+            <option value="Wilayah 2">Wilayah 2</option>
+            <option value="Wilayah 3">Wilayah 3</option>
+        </select>
 
-    <!-- Pilihan Posisi -->
-    <label>Posisi yang Dilamar</label>
-    <select name="posisi" required>
-      <option value="">-- Pilih --</option>
-      <option value="Operator">Operator</option>
-      <option value="Mekanik">Mekanik</option>
-      <option value="Administrasi">Administrasi</option>
-    </select>
+        <!-- Checkpoint -->
+        <div id="checkpointWrapper" class="hidden">
+            <label>Checkpoint</label>
+            <select name="checkpoint" id="checkpoint"></select>
+        </div>
 
-    <!-- Pesan -->
-    <label>Pesan / Catatan</label>
-    <textarea name="pesan"></textarea>
+        <!-- Kejadian -->
+        <div id="kejadianWrapper" class="hidden">
+            <label>Keterangan Kejadian</label>
+            <select name="kejadian" id="kejadian">
+                <option value="">-- Pilih Kejadian --</option>
+                <option value="1">Kondisi Pintu/jendela rusak</option>
+                <option value="2">Lampu padam/rusak</option>
+                <option value="3">Pagar/kawat rusak</option>
+                <option value="4">Pipa bocor/rusak</option>
+                <option value="5">Kunci gembok rusak</option>
+                <option value="6">Komponen unit rusak</option>
+                <option value="7">Kondisi hujan</option>
+                <option value="8">Hubungan pendek listrik</option>
+                <option value="9">Kebocoran air</option>
+                <option value="10">Situasi aman terkendali</option>
+            </select>
+        </div>
 
-    <!-- Tombol -->
-    <button type="submit">Kirim</button>
-    <p id="status"></p>
+        <!-- Kategori Lokasi -->
+        <div id="kategoriWrapper" class="hidden">
+            <label>Kategori Lokasi</label>
+            <select name="kategori">
+                <option value="">-- Pilih Kategori --</option>
+                <option>Bangunan</option>
+                <option>Fasilitas Tamu & Karyawan</option>
+                <option>Ruang Terbuka</option>
+                <option>Alat Kerja</option>
+                <option>Pendukung Kerja</option>
+                <option>K3LH & Security</option>
+                <option>Kategori Lainnya</option>
+            </select>
+        </div>
 
-  </form>
+        <!-- Upload Gambar -->
+        <div id="uploadWrapper" class="hidden">
+            <label>Upload Foto</label>
+            <input type="file" name="foto">
+        </div>
+
+        <button type="submit">Kirim</button>
+        <p id="status"></p>
+
+    </form>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjxGQS_cLay66glnA9n7S1nT-J7zGHLI_K8vk8Fk-EZb0QJ12Ryp3A4q2AyH0VWZfW/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTGu8yG0Vr8yGZdyc-PxRswkMlbrqfm5WjHrXqd2KgDtaCLXVxFwdtpxztBvjEccin/exec"; // Ganti dengan URL Apps Script
 
-document.getElementById('myForm').addEventListener('submit', e => {
-  e.preventDefault();
-  
-  let formData = {
-    nama: e.target.nama.value,
-    email: e.target.email.value,
-    telepon: e.target.telepon.value,
-    posisi: e.target.posisi.value,
-    pesan: e.target.pesan.value
-  };
+// Daftar checkpoint per wilayah
+const checkpoints = {
+    "Wilayah 1B": [
+        "1.1B.1 Pohon pelangi tanggul pertengahan Posko dan Aviari",
+        "1.1B.2 Pohon Soga Pojok Timur depan UT",
+        "1.1B.3 Pohon Trembesi Timur Gardu PGL 28",
+        "1.1B.4 Pintu Darurat Wing Bagian Selatan",
+        "1.1B.5 Pintu Luar Genset gedung Wing"
+    ],
+    "Wilayah 1": [
+        "1.1.1 Blower AC Bank Permata",
+        "1.1.2 Sebelah Barat Pos 4B",
+        "1.1.3 P3 Box Hydrant Barat",
+        "1.1.4 Area Loading",
+        "1.1.5 Area Exibition",
+        "1.1.6 Depan Aviari",
+        "1.7.1 Lt 3 Depan ruang enigma (Stand APAR)",
+        "1.7.2 Tanki solar",
+        "1.7.3 Tire Shop",
+        "1.7.4 Musholla Employe",
+        "1.7.5 Gardi Trafo",
+        "1.12.1 Lorong Akses Darurat arah Mushola",
+        "1.12.2 Pintu Darurat arah Workshop CBJKT",
+        "1.12.3 Pintu ruang server",
+        "1.12.4 Pintu Belakang R.makan Lt 4",
+        "1.12.5 Gudang Lt.4 depan",
+        "1.13.1 Tembok Belakang pos 13 lama",
+        "1.13.2 Tembok belakang gardu PLN PG 99",
+        "1.13.3 Gudang Oli",
+        "1.13.4 Ex Gudang Promotion"
+    ],
+    "Wing": [
+        "1.4B.1 Area parkir motor Lt.2",
+        "1.4B.2 Parkiran P Tiang sisi Utara",
+        "1.4B.3 P1 Tiang sisi utara",
+        "1.4B.4 P2 Box Hydrant Tengah",
+        "1.4B.5 P3 Box Hydrant Tengah",
+        "1.5.1 Area Lift Barang Lt. 2",
+        "1.5.2 Area Lift Barang Lt. 3",
+        "1.5.3 Area Lift Barang Lt. 4",
+        "1.5.4 Area Lift Barang Lt. 5",
+        "1.5.5 Area Lift Barang Lt. 6"
+    ],
+    "UTHO Tower": [
+        "1.3.1 Tangga darurat Lt. 3A Utara",
+        "1.3.2 Area Lift Barang Lt. 6",
+        "1.3.3 Tangga darurat Lt. 9 Utara",
+        "1.3.4 Rooftop Tanki Air",
+        "1.3.5 Tembok Toilet Ballroom"
+    ],
+    "Wilayah 2": [
+        "2.8.1 Pohon jati dekat menara masjid",
+        "2.8.2 Tembok pintu gerbang tanggul",
+        "2.8.3 Pohon belakang gudang Maintence",
+        "2.8.4 Tiang Bangunan Workshop Bp",
+        "2.8.5 Pojok belakang timur gudang CKD",
+        "2.8.6 Tembok UTS sisi Utara",
+        "2.9.1 Tembok sebelah pintu gudang KMSI",
+        "2.9.2 Pintu Gudang KMSI",
+        "2.9.3 Pintu Darurat gudang KMSI samping belakang timur",
+        "2.9.4 Pohon Albasiah selatan Pond B",
+        "2.10.1 Pohon dekat menara depan gedung yayasan",
+        "2.10.2 Box panel Lampu IPAL baru sisi barat",
+        "2.10.3 Pohon Angsana depan rumah pompa PAM (Air Bersih)",
+        "2.10.4 Tiang lampu area yard Timur Painting",
+        "2.10.5 Tembok pojok Office Workshop CBJKT",
+        "2.10.6 Tembok IPAL sisi utara"
+    ],
+    "Wilayah 3": [
+        "3.14.1 Tiang Workshop TTD",
+        "3.14.2 Tembok luar ruang pompa Hydrant",
+        "3.14.3 Tiang parkiran motor sebelah barat",
+        "3.14.4 Tembok samping menara pos",
+        "3.14.5 Corpu"
+    ]
+};
 
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('status').textContent = "✅ Data berhasil dikirim!";
-    document.getElementById('status').style.color = "green";
-    e.target.reset();
-  })
-  .catch(err => {
-    document.getElementById('status').textContent = "❌ Gagal mengirim data.";
-    document.getElementById('status').style.color = "red";
-  });
+// Event saat pilih wilayah
+document.getElementById('wilayah').addEventListener('change', function() {
+    const wilayah = this.value;
+    const checkpointSelect = document.getElementById('checkpoint');
+    checkpointSelect.innerHTML = '';
+    if (wilayah && checkpoints[wilayah]) {
+        checkpoints[wilayah].forEach(cp => {
+            const opt = document.createElement('option');
+            opt.value = cp;
+            opt.textContent = cp;
+            checkpointSelect.appendChild(opt);
+        });
+        document.getElementById('checkpointWrapper').classList.remove('hidden');
+    } else {
+        document.getElementById('checkpointWrapper').classList.add('hidden');
+    }
+});
+
+// Event saat pilih checkpoint
+document.getElementById('checkpoint').addEventListener('change', function() {
+    document.getElementById('kejadianWrapper').classList.remove('hidden');
+});
+
+// Event saat pilih kejadian
+document.getElementById('kejadian').addEventListener('change', function() {
+    const val = this.value;
+    if (val === "10") {
+        document.getElementById('kategoriWrapper').classList.add('hidden');
+        document.getElementById('uploadWrapper').classList.remove('hidden');
+    } else if (val) {
+        document.getElementById('kategoriWrapper').classList.remove('hidden');
+        document.getElementById('uploadWrapper').classList.remove('hidden');
+    }
+});
+
+// Kirim data ke Google Sheet
+document.getElementById('patroliForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    fetch(SCRIPT_URL, { method: 'POST', body: formData })
+    .then(res => {
+        document.getElementById('status').textContent = "✅ Data berhasil dikirim!";
+        document.getElementById('status').style.color = "green";
+        this.reset();
+        document.getElementById('checkpointWrapper').classList.add('hidden');
+        document.getElementById('kejadianWrapper').classList.add('hidden');
+        document.getElementById('kategoriWrapper').classList.add('hidden');
+        document.getElementById('uploadWrapper').classList.add('hidden');
+    })
+    .catch(err => {
+        document.getElementById('status').textContent = "❌ Gagal mengirim data.";
+        document.getElementById('status').style.color = "red";
+    });
 });
 </script>
 
