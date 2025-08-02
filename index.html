@@ -2,57 +2,76 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Form Patroli</title>
+<title>Form Patroli UT</title>
 <style>
     body {
         font-family: Arial, sans-serif;
-        background: #f7f7f7;
-        padding: 20px;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background: #FFD600;
+        color: black;
+        padding: 15px;
+        text-align: center;
+        border-bottom: 5px solid black;
+    }
+    header img {
+        max-height: 70px;
+        display: block;
+        margin: 0 auto 5px;
     }
     .form-container {
-        max-width: 600px;
-        margin: auto;
+        max-width: 800px;
+        margin: 20px auto;
         background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        padding: 20px 30px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     }
     h2 {
+        color: #000;
         text-align: center;
-        color: #333;
+        margin-bottom: 20px;
     }
     label {
         font-weight: bold;
-        margin-top: 10px;
         display: block;
+        margin-top: 15px;
     }
     select, input, textarea {
         width: 100%;
         padding: 8px;
         margin-top: 5px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
         border-radius: 5px;
+        border: 1px solid #ccc;
     }
     button {
-        background: #1976d2;
+        background: black;
         color: white;
-        padding: 10px 15px;
+        padding: 12px 20px;
         border: none;
         border-radius: 5px;
+        margin-top: 20px;
         cursor: pointer;
+        font-size: 16px;
     }
     button:hover {
-        background: #0f5ca6;
+        background: #333;
     }
 </style>
 </head>
 <body>
 
+<header>
+    <img src="UT member of ASTRA vertical.png" alt="United Tractors">
+    <h1>Form Patroli</h1>
+</header>
+
 <div class="form-container">
-    <h2>Form Patroli</h2>
     <form id="patroliForm" enctype="multipart/form-data" method="POST">
-        
+
         <label>Nama:</label>
         <input type="text" name="nama" required>
 
@@ -113,6 +132,56 @@
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUCE4TPQtbKsRABXV-nWt-C4dYmLddU8pbXbltLUgM2egyuRO8eyZ56Jtx00ejI0A/exec"; // Ganti dengan URL Web App kamu
+
+// Daftar checkpoint per wilayah
+const checkpointData = {
+    "Wilayah 1": [
+        "1.1B.1 Pohon pelangi tanggul pertengahan Posko dan Aviari",
+        "1.1B.2 Pohon Soga Pojok Timur depan UT",
+        "1.1B.3 Pohon Trembesi Timur Gardu PGL 28",
+        "1.1B.4 Pintu Darurat Wing Bagian Selatan",
+        "1.1B.5 Pintu Luar Genset gedung Wing"
+    ],
+    "Wilayah 1B": [
+        "1.1.1 Blower AC Bank Permata",
+        "1.1.2 Sebelah Barat Pos 4B",
+        "1.1.3 P3 Box Hydrant Barat",
+        "1.1.4 Area Loading",
+        "1.1.5 Area Exibition"
+    ],
+    "Wing": [
+        "1.4B.1 Area parkir motor Lt.2",
+        "1.4B.2 Parkiran P Tiang sisi Utara",
+        "1.4B.3 P1 Tiang sisi utara"
+    ],
+    "UTHO Tower": [
+        "1.3.1 Tangga darurat Lt. 3A Utara",
+        "1.3.2 Area Lift Barang Lt. 6",
+        "1.3.3 Tangga darurat Lt. 9 Utara"
+    ],
+    "Wilayah 2": [
+        "2.8.1 Pohon jati dekat menara masjid",
+        "2.8.2 Tembok pintu gerbang tanggul"
+    ],
+    "Wilayah 3": [
+        "3.14.1 Tiang Workshop TTD",
+        "3.14.2 Tembok luar ruang pompa Hydrant"
+    ]
+};
+
+document.getElementById("wilayah").addEventListener("change", function() {
+    let wilayah = this.value;
+    let checkpointSelect = document.getElementById("checkpoint");
+    checkpointSelect.innerHTML = '<option value="">-- Pilih Checkpoint --</option>';
+    if (checkpointData[wilayah]) {
+        checkpointData[wilayah].forEach(cp => {
+            let opt = document.createElement("option");
+            opt.value = cp;
+            opt.textContent = cp;
+            checkpointSelect.appendChild(opt);
+        });
+    }
+});
 
 document.getElementById('patroliForm').addEventListener('submit', function(e) {
     e.preventDefault();
