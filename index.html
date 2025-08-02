@@ -8,11 +8,12 @@
     header { background: #FFD600; color: black; padding: 15px; text-align: center; border-bottom: 5px solid black; }
     header img { max-height: 70px; display: block; margin: 0 auto 5px; }
     .container { max-width: 800px; margin: 20px auto; background: white; padding: 20px 30px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
-    h2 { text-align: center; }
     label { font-weight: bold; margin-top: 15px; display: block; }
     select, input, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
     button { background: black; color: white; padding: 12px 20px; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer; }
     button:hover { background: #333; }
+    #preview { margin-top: 10px; display: none; }
+    #preview img { max-width: 200px; border: 2px solid #ccc; border-radius: 5px; }
 </style>
 </head>
 <body>
@@ -52,15 +53,15 @@
     <label>Kejadian:</label>
     <select name="kejadian" id="kejadian" required>
         <option value="">-- Pilih Kejadian --</option>
-        <option value="Kejadian 1">Kondisi Pintu, jendela rusak, terbuka / belum terkunci</option>
-        <option value="Kejadian 2">Lampu padam , rusak / hilang</option>
-        <option value="Kejadian 3">Pagar, Kawat duri rusak</option>
-        <option value="Kejadian 4">Pipa air bersih / hidran / limbah bocor</option>
-        <option value="Kejadian 5">Kunci gembok rusak atau hilang</option>
-        <option value="Kejadian 6">Komponen unit rusak / hilang</option>
+        <option value="Kejadian 1">Kondisi Pintu / Jendela rusak</option>
+        <option value="Kejadian 2">Lampu padam / rusak</option>
+        <option value="Kejadian 3">Pagar rusak</option>
+        <option value="Kejadian 4">Pipa bocor</option>
+        <option value="Kejadian 5">Kunci gembok rusak</option>
+        <option value="Kejadian 6">Komponen unit hilang</option>
         <option value="Kejadian 7">Kondisi Hujan</option>
         <option value="Kejadian 8">Hubungan pendek listrik</option>
-        <option value="Kejadian 9">Kebocoran air di ruangan</option>
+        <option value="Kejadian 9">Kebocoran air</option>
         <option value="Kejadian 10">Situasi aman terkendali</option>
     </select>
 
@@ -79,88 +80,52 @@
     </div>
 
     <label>Upload Foto:</label>
-    <input type="file" name="foto" accept="image/*">
+    <input type="file" name="foto" id="foto" accept="image/*">
+    <div id="preview"><img id="previewImg" src="" alt="Preview Foto"></div>
 
     <button type="submit">Kirim</button>
 </form>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZXzC2s0i-LbGeSEgTSolAqSjjBHvK056ZLzegFig5pE-OPkSLoMFuT3YSLAUYBOgl/exec"; // Ganti dengan URL Web App
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxC6WfK31ExV8yS9f2lQ9kNvn1tG0bkPuARmOmpHrGSD77LgjxDEX9wZBvtGHQTdash/exec"; // Ganti dengan URL Web App
 
 const checkpointData = {
-    "Wilayah 1": [
-        "1.1.1 Blower AC Bank Permata",
-        "1.1.2 Sebelah Barat Pos 4B",
-        "1.1.3 P3 Box Hydrant Barat",
-        "1.1.4 Area Loading",
-        "1.1.5 Area Exibition",
-        "1.1.6 Depan Aviari",
-        "1.7.1 Lt 3 Depan ruang enigma (Stand APAR)",
-        "1.7.2 Tanki solar",
-        "1.7.3 Tire Shop",
-        "1.7.4 Musholla Employe",
-        "1.7.5 Gardi Trafo",
-        "1.12.1 Lorong Akses Darurat arah Mushola",
-        "1.12.2 Pintu Darurat arah Workshop CBJKT",
-        "1.12.3 Pintu ruang server",
-        "1.12.4 Pintu Belakang R.makan Lt 4",
-        "1.12.5 Gudang Lt.4 depan",
-        "1.13.1 Tembok Belakang pos 13 lama",
-        "1.13.2 Tembok belakang gardu PLN PG 99",
-        "1.13.3 Gudang Oli",
-        "1.13.4 Ex Gudang Promotion"
-    ],
     "Wilayah 1B": [
         "1.1B.1 Pohon pelangi tanggul pertengahan Posko dan Aviari",
         "1.1B.2 Pohon Soga Pojok Timur depan UT",
         "1.1B.3 Pohon Trembesi Timur Gardu PGL 28",
         "1.1B.4 Pintu Darurat Wing Bagian Selatan",
-        "1.1B.5 Pintu Luar Genset gedung Wing",
+        "1.1B.5 Pintu Luar Genset gedung Wing"
+    ],
+    "Wilayah 1": [
+        "1.1.1 Blower AC Bank Permata","1.1.2 Sebelah Barat Pos 4B","1.1.3 P3 Box Hydrant Barat","1.1.4 Area Loading",
+        "1.1.5 Area Exibition","1.1.6 Depan Aviari","1.7.1 Lt 3 Depan ruang enigma (Stand APAR)","1.7.2 Tanki solar",
+        "1.7.3 Tire Shop","1.7.4 Musholla Employe","1.7.5 Gardi Trafo","1.12.1 Lorong Akses Darurat arah Mushola",
+        "1.12.2 Pintu Darurat arah Workshop CBJKT","1.12.3 Pintu ruang server","1.12.4 Pintu Belakang R.makan Lt 4",
+        "1.12.5 Gudang Lt.4 depan","1.13.1 Tembok Belakang pos 13 lama","1.13.2 Tembok belakang gardu PLN PG 99",
+        "1.13.3 Gudang Oli","1.13.4 Ex Gudang Promotion"
     ],
     "Wing": [
-        "1.4B.1 Area parkir motor Lt.2",
-        "1.4B.2 Parkiran P Tiang sisi Utara",
-        "1.4B.3 P1 Tiang sisi utara",
-        "1.4B.4 P2 Box Hydrant Tengah",
-        "1.4B.5 P3 Box Hydrant Tengah",
-        "1.5.1 Area Lift Barang Lt. 2",
-        "1.5.2 Area Lift Barang Lt. 3",
-        "1.5.3 Area Lift Barang Lt. 4",
-        "1.5.4 Area Lift Barang Lt. 5",
-        "1.5.5 Area Lift Barang Lt. 6"
+        "1.4B.1 Area parkir motor Lt.2","1.4B.2 Parkiran P Tiang sisi Utara","1.4B.3 P1 Tiang sisi utara",
+        "1.4B.4 P2 Box Hydrant Tengah","1.4B.5 P3 Box Hydrant Tengah","1.5.1 Area Lift Barang Lt. 2",
+        "1.5.2 Area Lift Barang Lt. 3","1.5.3 Area Lift Barang Lt. 4","1.5.4 Area Lift Barang Lt. 5","1.5.5 Area Lift Barang Lt. 6"
     ],
     "UTHO Tower": [
-        "1.3.1 Tangga darurat Lt. 3A Utara",
-        "1.3.2 Area Lift Barang Lt. 6",
-        "1.3.3 Tangga darurat Lt. 9 Utara",
-        "1.3.4 Rooftop Tanki Air",
-        "1.3.5 Tembok Toilet Ballroom"
+        "1.3.1 Tangga darurat Lt. 3A Utara","1.3.2 Area Lift Barang Lt. 6","1.3.3 Tangga darurat Lt. 9 Utara",
+        "1.3.4 Rooftop Tanki Air","1.3.5 Tembok Toilet Ballroom"
     ],
     "Wilayah 2": [
-        "2.8.1 Pohon jati dekat menara masjid",
-        "2.8.2 Tembok pintu gerbang tanggul",
-        "2.8.3 Pohon belakang gudang Maintence",
-        "2.8.4 Tiang Bangunan Workshop Bp",
-        "2.8.5 Pojok belakang timur gudang CKD",
-        "2.8.6 Tembok UTS sisi Utara",
-        "2.9.1 Tembok sebelah pintu gudang KMSI",
-        "2.9.2 Pintu Gudang KMSI",
-        "2.9.3 Pintu Darurat gudang KMSI samping belakang timur",
-        "2.9.4 Pohon Albasiah selatan Pond B",
-        "2.10.1 Pohon dekat menara depan gedung yayasan",
-        "2.10.2 Box panel Lampu IPAL baru sisi barat",
-        "2.10.3 Pohon Angsana depan rumah pompa PAM ( Air Bersih )",
-        "2.10.4 Tiang lampu area yard Timur Painting",
-        "2.10.5 Tembok pojok Office Workshop CBJKT",
+        "2.8.1 Pohon jati dekat menara masjid","2.8.2 Tembok pintu gerbang tanggul","2.8.3 Pohon belakang gudang Maintence",
+        "2.8.4 Tiang Bangunan Workshop Bp","2.8.5 Pojok belakang timur gudang CKD","2.8.6 Tembok UTS sisi Utara",
+        "2.9.1 Tembok sebelah pintu gudang KMSI","2.9.2 Pintu Gudang KMSI","2.9.3 Pintu Darurat gudang KMSI samping belakang timur",
+        "2.9.4 Pohon Albasiah selatan Pond B","2.10.1 Pohon dekat menara depan gedung yayasan","2.10.2 Box panel Lampu IPAL baru sisi barat",
+        "2.10.3 Pohon Angsana depan rumah pompa PAM","2.10.4 Tiang lampu area yard Timur Painting","2.10.5 Tembok pojok Office Workshop CBJKT",
         "2.10.6 Tembok IPAL sisi utara"
     ],
     "Wilayah 3": [
-        "3.14.1 Tiang Workshop TTD",
-        "3.14.2 Tembok luar ruang pompa Hydrant",
-        "3.14.3 Tiang parkiran motor sebelah barat",
-        "3.14.4 Tembok samping menara pos",
-        "3.14.5 Corpu"
+        "3.14.1 Tiang Workshop TTD","3.14.2 Tembok luar ruang pompa Hydrant","3.14.3 Tiang parkiran motor sebelah barat",
+        "3.14.4 Tembok samping menara pos","3.14.5 Corpu"
     ]
 };
 
@@ -183,12 +148,26 @@ document.getElementById("kejadian").addEventListener("change", function() {
         (this.value !== "Kejadian 10" && this.value !== "") ? "block" : "none";
 });
 
+document.getElementById("foto").addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("previewImg").src = e.target.result;
+            document.getElementById("preview").style.display = "block";
+        }
+        reader.readAsDataURL(file);
+    } else {
+        document.getElementById("preview").style.display = "none";
+    }
+});
+
 document.getElementById("patroliForm").addEventListener("submit", function(e) {
     e.preventDefault();
     let fd = new FormData(this);
     fetch(SCRIPT_URL, { method: "POST", body: fd })
     .then(res => res.text())
-    .then(res => { alert("Form berhasil dikirim!"); this.reset(); })
+    .then(res => { alert("Form berhasil dikirim!"); this.reset(); document.getElementById("preview").style.display = "none"; })
     .catch(err => { alert("Gagal mengirim!"); console.error(err); });
 });
 </script>
