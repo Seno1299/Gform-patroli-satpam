@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pendaftaran</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="form-header">
+  <h1>Form Pendaftaran</h1>
+  <p>Isi data berikut untuk mendaftar.</p>
+</div>
+
+<div class="form-container">
+  <form id="myForm">
+
+    <!-- Nama -->
+    <div class="form-group">
+      <label>Nama Lengkap</label>
+      <input type="text" name="nama" required>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" name="email" required>
+    </div>
+
+    <!-- Jenis Kelamin -->
+    <div class="form-group">
+      <label>Jenis Kelamin</label>
+      <div class="radio-group">
+        <label><input type="radio" name="jenisKelamin" value="Laki-laki" required> Laki-laki</label>
+        <label><input type="radio" name="jenisKelamin" value="Perempuan"> Perempuan</label>
+      </div>
+    </div>
+
+    <!-- Keahlian -->
+    <div class="form-group">
+      <label>Bidang Keahlian</label>
+      <select name="keahlian" required>
+        <option value="">-- Pilih --</option>
+        <option value="Desain">Desain</option>
+        <option value="Pemrograman">Pemrograman</option>
+        <option value="Pemasaran">Pemasaran</option>
+      </select>
+    </div>
+
+    <!-- Pesan -->
+    <div class="form-group">
+      <label>Pesan atau Catatan</label>
+      <textarea name="pesan" required></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit">Kirim</button>
+
+    <!-- Status -->
+    <p id="status"></p>
+  </form>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjxGQS_cLay66glnA9n7S1nT-J7zGHLI_K8vk8Fk-EZb0QJ12Ryp3A4q2AyH0VWZfW/exec"; 
+document.getElementById('myForm').addEventListener('submit', e => {
+  e.preventDefault();
+  
+  let formData = {
+    nama: e.target.nama.value,
+    email: e.target.email.value,
+    jenisKelamin: e.target.jenisKelamin.value,
+    keahlian: e.target.keahlian.value,
+    pesan: e.target.pesan.value
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('status').textContent = "✅ Data berhasil dikirim!";
+    document.getElementById('status').style.color = "green";
+    e.target.reset();
+  })
+  .catch(err => {
+    document.getElementById('status').textContent = "❌ Gagal mengirim data.";
+    document.getElementById('status').style.color = "red";
+    console.error(err);
+  });
+});
+</script>
+
+</body>
+</html>
